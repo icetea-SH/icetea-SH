@@ -1,0 +1,351 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Java根据合同模板生成文件 | icetea</title>
+  <meta name="author" content="icetea">
+  
+  <meta name="description" content="本文主要叙述了Java根据Docx模板生成文件的流程以及一些相关经验。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Java根据合同模板生成文件"/>
+  <meta property="og:site_name" content="icetea"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">icetea</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Java根据合同模板生成文件</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  
+		 <div class="alert alert-success description">
+			<i class="fa fa-info-circle"></i> 本文主要叙述了Java根据Docx模板生成文件的流程以及一些相关经验。
+		 </div> <!-- alert -->
+	  		
+
+	  <p>​        在这里记录一下在工作中遇到的一个问题：将客户提供的合同模板填充数据库中查询出来的数据，然后在合同的页眉添加防伪二维码或水印再提供给客户下载。在写的过程中走了一些弯路，不过好在最后还是成功解决~</p>
+<span id="more"></span>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​        首先，客户提供的模板非常多有Xls，Xlsx，Docx这三种格式，我首先看了下网上的解决方案：有的是用 Apache POI 包直接来进行读写，当然也有GitHub上大佬封装好的jar包底层也是调用的 Apache POI 包但是操作简化了很多。我这里用到了2个包：<a target="_blank" rel="noopener" href="http://deepoove.com/poi-tl/">Poi-tl Documentation</a>，<a target="_blank" rel="noopener" href="https://www.kancloud.cn/zhangdaiscott/autopoi/1623954">AutoPoi</a> 其中 AutoPoi 是 Excel  和  Word 都能进行操作的而 Poi-tl 则是专注于操作 Docx 。</p>
+<p>​        因为 AutoPoi 是大部分 Office 文件都能操作的 所以我首先选择使用了它，按照文档上的提示替换好所有模板中的标签的后，测试 Docx 的文件没啥问题，但是 Excel 的文件如果涉及到文件中有多个明细行要写入的时候 文档下面的内容就会错位… 最后我将问题定位到客户提供的模板上，只要将模板中表格的“自动换行” 属性去除掉再导出的文件就正常了。</p>
+<p>​        前面提到导出的文件是要添加水印和防伪二维码的，Word 任然是没有什么问题，只不过 Excel 文件添加水印和防伪二维码非常困难，首先 Excel 是不支持“水印”这个功能的，想要做到类似的网上的方法大致分为2种 ：设置 Excel 的背景图片但是这种方式打印的时候不能将“水印”打印出来，第二种是使用调用“艺术字”功能程序在 Excel 文件上按照一定的逻辑贴上，这种方法虽然可以打印出来但用户可以轻松的编辑“艺术字”所以也是不可取的，再说说防伪二维码：Excel 在页眉上写一张图片的方法也是非常少的，试了很多大多都不可用。</p>
+<p>​        最后的解决方案是：和客户协商将所有的 Excel 文件都转为Docx文件，后端生成 Jar 包则从 AutoPoi 换为 Poi-tl ，这样就不用去支持Excel 了！~   Poi-tl 设置页眉非常方便且语法和 AutoPoi  很相近，稍作修改就能兼容。下面简单说下用法。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><h2 id="将一个普通的值放到文件中"><a href="#将一个普通的值放到文件中" class="headerlink" title="将一个普通的值放到文件中"></a>将一个普通的值放到文件中</h2><p>在后端中这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">XWPFTemplate template = XWPFTemplate.compile(<span class="string">&quot;template.docx&quot;</span>).render(  </span><br><span class="line">	<span class="keyword">new</span> HashMap&lt;String, Object&gt;()&#123;&#123;put(<span class="string">&quot;title&quot;</span>, <span class="string">&quot;Hi, poi-tl Word模板引擎&quot;</span>);&#125;&#125;</span><br><span class="line">	);</span><br><span class="line">template.writeAndClose(<span class="keyword">new</span> FileOutputStream(<span class="string">&quot;output.docx&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>在模板中设置标签&#123;&#123;title&#125;&#125;到对应位置</p>
+<h2 id="将一个表格放到文件中"><a href="#将一个表格放到文件中" class="headerlink" title="将一个表格放到文件中"></a>将一个表格放到文件中</h2><p>后端中需要这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//组装表格列表数据</span></span><br><span class="line">List&lt;Map&lt;String,Object&gt;&gt; detailList=<span class="keyword">new</span> ArrayList&lt;Map&lt;String,Object&gt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">    Map&lt;String,Object&gt; detailMap = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">    detailMap.put(<span class="string">&quot;index&quot;</span>, i+<span class="number">1</span>);<span class="comment">//序号</span></span><br><span class="line">    detailMap.put(<span class="string">&quot;goods&quot;</span>, <span class="string">&quot;商品&quot;</span>+i);<span class="comment">//商品名称</span></span><br><span class="line">    detailList.add(detailMap);</span><br><span class="line">&#125;</span><br><span class="line">HackLoopTableRenderPolicy policy = <span class="keyword">new</span> HackLoopTableRenderPolicy();</span><br><span class="line">Configure config = Configure.newBuilder().bind(<span class="string">&quot;detailList&quot;</span>, policy).build();</span><br><span class="line">XWPFTemplate template = XWPFTemplate.compile(<span class="string">&quot;填写模板地址&quot;</span>, config).render(</span><br><span class="line">	        		<span class="keyword">new</span> HashMap&lt;String, Object&gt;() &#123;&#123;</span><br><span class="line">			        put(<span class="string">&quot;detailList&quot;</span>, detailList);</span><br><span class="line">			        put(<span class="string">&quot;title&quot;</span>, <span class="string">&quot;Hi, poi-tl Word模板引擎&quot;</span>);</span><br><span class="line">			    &#125;&#125;</span><br><span class="line">			);</span><br><span class="line">FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;填写实例化路径&quot;</span>);</span><br><span class="line">template.write(fos);</span><br></pre></td></tr></table></figure>
+
+<p>模板中需要这样写：</p>
+<p>&#123;&#123;title&#125;&#125;</p>
+<table>
+<thead>
+<tr>
+<th align="center">&#123;&#123;detailList&#125;&#125;序号</th>
+<th align="center">商品名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">[index]</td>
+<td align="center">[goods]</td>
+</tr>
+</tbody></table>
+<h2 id="页眉添加防伪二维码"><a href="#页眉添加防伪二维码" class="headerlink" title="页眉添加防伪二维码"></a>页眉添加防伪二维码</h2><p>Poi-tl支持很多格式的图片，我这里用的是 Byte[] 形式的 PNG 二维码图片，生成二维码的 Jar 包很多，这里不再深究。</p>
+<p>后端中需要这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map.put(<span class="string">&quot;picture&quot;</span>,PictureRenderData(<span class="number">50</span>, <span class="number">50</span>, PictureType.PNG, Byte[]形式的PNG对象));</span><br></pre></td></tr></table></figure>
+
+<p>在模板中图片标签以@开始：    且只要将标签放到页眉中就可以做到每页都有防伪二维码的效果！</p>
+<h2 id="前端下载"><a href="#前端下载" class="headerlink" title="前端下载"></a>前端下载</h2><p>Controller层</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ApiResult&lt;Boolean&gt; <span class="title">exportDataWord</span><span class="params">(HttpServletResponse response)</span></span>&#123;</span><br><span class="line">        XWPFTemplate template = 填充好数据后返回的XWPFTemplate对象;</span><br><span class="line">        String fileName = <span class="string">&quot;文件名.docx&quot;</span></span><br><span class="line">        response.setContentType(<span class="string">&quot;application/force-download&quot;</span>);</span><br><span class="line">        response.addHeader(<span class="string">&quot;Content-Disposition&quot;</span>, <span class="string">&quot;attachment;fileName=&quot;</span> + fileName);</span><br><span class="line">        OutputStream out = response.getOutputStream();</span><br><span class="line">        template.write(out);</span><br><span class="line">        out.flush();</span><br><span class="line">        out.close();</span><br><span class="line">        template.close();</span><br><span class="line">        <span class="keyword">return</span> ApiResult.result(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Vue前端</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.$http.request(&#123;</span><br><span class="line">        <span class="attr">url</span>: url,</span><br><span class="line">        <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">        <span class="attr">showLoading</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">responseType</span>: <span class="string">&quot;blob&quot;</span></span><br><span class="line">    	&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> blob = <span class="keyword">new</span> Blob([res],&#123; <span class="attr">type</span>: <span class="string">&#x27;application/vnd.openxmlformats-officedocument.wordprocessingml.document&#x27;</span>&#125;);</span><br><span class="line">            <span class="keyword">let</span> downloadElement = <span class="built_in">document</span>.createElement(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">            <span class="keyword">let</span> href = <span class="built_in">window</span>.URL.createObjectURL(blob); <span class="comment">//创建下载的链接</span></span><br><span class="line">            downloadElement.href = href;</span><br><span class="line">            downloadElement.download = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()+<span class="string">&quot;.docx&quot;</span>; <span class="comment">//下载后文件名</span></span><br><span class="line">            <span class="built_in">document</span>.body.appendChild(downloadElement);</span><br><span class="line">            downloadElement.click(); <span class="comment">//点击下载</span></span><br><span class="line">            <span class="built_in">document</span>.body.removeChild(downloadElement); <span class="comment">//下载完成移除元素</span></span><br><span class="line">            <span class="built_in">window</span>.URL.revokeObjectURL(href); <span class="comment">//释放掉blob对象</span></span><br><span class="line">        &#125;).finally(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.Query();</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>其中 type 参数按需填写</p>
+<table>
+<thead>
+<tr>
+<th align="center">文件后缀</th>
+<th align="center">blob对应的type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">.doc</td>
+<td align="center">application/msword</td>
+</tr>
+<tr>
+<td align="center">.docx</td>
+<td align="center">application/vnd.openxmlformats-officedocument.wordprocessingml.document</td>
+</tr>
+<tr>
+<td align="center">.xls</td>
+<td align="center">application/vnd.ms-excel</td>
+</tr>
+<tr>
+<td align="center">.xlsx</td>
+<td align="center">application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</td>
+</tr>
+<tr>
+<td align="center">.txt</td>
+<td align="center">text/plain</td>
+</tr>
+</tbody></table>
+<p>友情提示：如果下载不了可以调试前端看看是不是被$http拦截器给拦截了，并做了其他的处理。</p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2021/08/12/Hello Hexo/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2021-09-28 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Java/">Java<span>1</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/文件生成/">文件生成<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-article-text">前言</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-article-text">代码</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%B0%86%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%9A%84%E5%80%BC%E6%94%BE%E5%88%B0%E6%96%87%E4%BB%B6%E4%B8%AD"><span class="toc-article-text">将一个普通的值放到文件中</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%B0%86%E4%B8%80%E4%B8%AA%E8%A1%A8%E6%A0%BC%E6%94%BE%E5%88%B0%E6%96%87%E4%BB%B6%E4%B8%AD"><span class="toc-article-text">将一个表格放到文件中</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E9%A1%B5%E7%9C%89%E6%B7%BB%E5%8A%A0%E9%98%B2%E4%BC%AA%E4%BA%8C%E7%BB%B4%E7%A0%81"><span class="toc-article-text">页眉添加防伪二维码</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%89%8D%E7%AB%AF%E4%B8%8B%E8%BD%BD"><span class="toc-article-text">前端下载</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2021 icetea
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
