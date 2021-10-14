@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>IDEA Linux 远程调试</title>
+      <link href="/2021/10/13/IDEA-Linux-%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95/"/>
+      <url>/2021/10/13/IDEA-Linux-%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95/</url>
+      
+        <content type="html"><![CDATA[<p>​        本文源起于一次线上Bug，代码在本地运行良好但是放到 Linux 主机上却报了错，当时还不会 IDEA 远程调试只能不断的将关键位置的信息存入日志或控制台打印出来，且不停的打包和修改非常让人抓狂🙃 ，百度中发现 IDEA 居然还可以调试 Linux 主机上正在运行的代码，简直就像发现了宝藏，又是一份意想不到的狂喜。🤣🤣🤣!!</p><span id="more"></span><p>​        首先介绍下环境：IDEA 2020.1 , JDK1.8 , 调试主机是运行在Hyper-V 中的 Centos7 主机 项目用的是SpringBoot </p><h1 id="IDEA配置"><a href="#IDEA配置" class="headerlink" title="IDEA配置"></a>IDEA配置</h1><p>​        先打开IDEA 最上方的 <code>Run-&gt;Edit Configurations...</code> ，点击左上角的加号选择 <code>Remote JVM Debug</code> 窗口如下。<img src="https://cdn.59ict.com/assets/1634117993380Jw2SbifS.png" alt="image-20211013173951926" style="zoom:67%;" /></p><p>​        其中Host需要填写你 Linux 主机的地址 Port 填写主机上未被占用的端口号就行，它这里默认是5005 这里我就不动了，再将下面文本框中的参数复制并记录下来，后续部署的时候需要使用。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</span><br></pre></td></tr></table></figure><h1 id="Linux配置"><a href="#Linux配置" class="headerlink" title="Linux配置"></a>Linux配置</h1><p>​        将当前代码打成jar包上传到 Linux 后，部署的命令需要插入上面 IDEA  给的参数，如下。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -agentlib:jdwp=transport=dt_socket,server=y,<span class="built_in">suspend</span>=n,address=5005 -jar 你的jar包名称</span><br></pre></td></tr></table></figure><p>​        若部署出现<code>Listening for transport dt_socket at address: 5005</code> 则表示本次部署打开了调试模式。</p><p>​        至此IDEA选择你刚刚配置的运行项再点击小虫子按钮就可以开始调试啦！<code>要注意本地代码要和服务器上的包相对应哦！</code></p><h1 id="访问问题"><a href="#访问问题" class="headerlink" title="访问问题"></a>访问问题</h1><p>​        如果仍然不行则大概率是端口访问的问题，或者防火墙未关闭，我这里推荐你用 <code>tcping</code> :一个开源的控制台程序，可以用来 ping Linux的端口<img src="https://cdn.59ict.com/assets/1634180282395dMBc16Je.png" alt="image-20211014105759187"></p><p>​        使用方法也很简单:将 tcping.exe 下载下来 放到 C:\windows\system32  目录下，这样你就可以在CMD中直接使用它啦！</p><p><img src="https://cdn.59ict.com/assets/1634180626340aBs0CjEZ.png" alt="image-20211014110343029"></p><p>语法如下：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcping IP地址 端口号</span><br></pre></td></tr></table></figure><p>CentOS 中你可能用的命令如下：</p><p>Linux查看某个端口是否在运行：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp|grep 端口号</span><br></pre></td></tr></table></figure><p>查看防火墙状态：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld</span><br></pre></td></tr></table></figure><p>暂时关闭防火墙：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure><p>永久关闭防火墙：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure><p>重启防火墙：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable firewalld</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> IDE </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> IDEA </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Java 开发最容易写的 10 个bug</title>
       <link href="/2021/10/12/Java-%E5%BC%80%E5%8F%91%E6%9C%80%E5%AE%B9%E6%98%93%E5%86%99%E7%9A%84-10-%E4%B8%AAbug/"/>
       <url>/2021/10/12/Java-%E5%BC%80%E5%8F%91%E6%9C%80%E5%AE%B9%E6%98%93%E5%86%99%E7%9A%84-10-%E4%B8%AAbug/</url>
