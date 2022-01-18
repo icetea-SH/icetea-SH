@@ -137,7 +137,7 @@ var _hmt = _hmt || [];
 <span id="more"></span>
 
 <p>​        首先介绍下环境：IDEA 2020.1 , JDK1.8 , 调试主机是运行在Hyper-V 中的 Centos7 主机 项目用的是SpringBoot </p>
-<h1 id="IDEA配置"><a href="#IDEA配置" class="headerlink" title="IDEA配置"></a>IDEA配置</h1><p>​        先打开IDEA 最上方的 <code>Run-&gt;Edit Configurations...</code> ，点击左上角的加号选择 <code>Remote JVM Debug</code> 窗口如下。<img src="https://cdn.59ict.com/assets/1634117993380Jw2SbifS.png" alt="image-20211013173951926" style="zoom:67%;" /></p>
+<h1 id="IDEA配置"><a href="#IDEA配置" class="headerlink" title="IDEA配置"></a>IDEA配置</h1><p>​        先打开IDEA 最上方的 <code>Run-&gt;Edit Configurations...</code> ，点击左上角的加号选择 <code>Remote JVM Debug</code> 窗口如下。<img src="https://img.doge.sh.cn/assets/1634117993380Jw2SbifS.png" alt="image-20211013173951926" style="zoom:67%;" /></p>
 <p>​        其中Host需要填写你 Linux 主机的地址 Port 填写主机上未被占用的端口号就行，它这里默认是5005 这里我就不动了，再将下面文本框中的参数复制并记录下来，后续部署的时候需要使用。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</span><br></pre></td></tr></table></figure>
 
@@ -146,9 +146,9 @@ var _hmt = _hmt || [];
 
 <p>​        若部署出现<code>Listening for transport dt_socket at address: 5005</code> 则表示本次部署打开了调试模式。</p>
 <p>​        至此IDEA选择你刚刚配置的运行项再点击小虫子按钮就可以开始调试啦！<code>要注意本地代码要和服务器上的包相对应哦！</code></p>
-<h1 id="访问问题"><a href="#访问问题" class="headerlink" title="访问问题"></a>访问问题</h1><p>​        如果仍然不行则大概率是端口访问的问题，或者防火墙未关闭，我这里推荐你用 <code>tcping</code> :一个开源的控制台程序，可以用来 ping Linux的端口<img src="https://cdn.59ict.com/assets/1634180282395dMBc16Je.png" alt="image-20211014105759187"></p>
+<h1 id="访问问题"><a href="#访问问题" class="headerlink" title="访问问题"></a>访问问题</h1><p>​        如果仍然不行则大概率是端口访问的问题，或者防火墙未关闭，我这里推荐你用 <code>tcping</code> :一个开源的控制台程序，可以用来 ping Linux的端口<img src="https://img.doge.sh.cn/assets/1634180282395dMBc16Je.png" alt="image-20211014105759187"></p>
 <p>​        使用方法也很简单:将 tcping.exe 下载下来 放到 C:\windows\system32  目录下，这样你就可以在CMD中直接使用它啦！</p>
-<p><img src="https://cdn.59ict.com/assets/1634180626340aBs0CjEZ.png" alt="image-20211014110343029"></p>
+<p><img src="https://img.doge.sh.cn/assets/1634180626340aBs0CjEZ.png" alt="image-20211014110343029"></p>
 <p>语法如下：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcping IP地址 端口号</span><br></pre></td></tr></table></figure>
 
@@ -177,7 +177,8 @@ var _hmt = _hmt || [];
 
     
     
-    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    <a href="/2021/12/03/Java-集合框架-(1)/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
@@ -235,7 +236,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/Java/">Java<span>2</span></a></li> <li><a href="/tags/IDEA/">IDEA<span>1</span></a></li> <li><a href="/tags/Linux/">Linux<span>1</span></a></li>
+  <li><a href="/tags/Java/">Java<span>4</span></a></li> <li><a href="/tags/IDEA/">IDEA<span>1</span></a></li> <li><a href="/tags/Linux/">Linux<span>1</span></a></li>
     </ul>
 	</div>
 		
@@ -266,7 +267,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2021 icetea
+  &copy; 2022 icetea
   
       with help from <a>Hexo</a>,<a>Freemind</a>,<a>Twitter Bootstrap</a> and <a>BOOTSTRA.386</a>. 
      <br> Theme by <a>Freemind.386</a>.    

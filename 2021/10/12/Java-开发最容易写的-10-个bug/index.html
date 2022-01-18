@@ -145,14 +145,14 @@ var _hmt = _hmt || [];
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = Arrays.asList(arr);</span><br></pre></td></tr></table></figure>
 
 <p>Arrays.asList() 将返回一个 ArrayList，它是 Arrays 中的私有静态类，它不是 java.util.ArrayList 类。如下图所示</p>
-<p><img src="https://cdn.59ict.com/assets/1634026047857yahfYXFz.webp" alt="640"></p>
+<p><img src="https://img.doge.sh.cn/assets/1634026047857yahfYXFz.webp" alt="640"></p>
 <p>Arrays 内部的 ArrayList 只有 set、get、contains 等方法，但是没有能够像是 add 这种能够使其内部结构进行改变的方法，所以 Arrays 内部的 ArrayList 的大小是固定的。</p>
-<p><img src="https://cdn.59ict.com/assets/1634026103094sxe80DfX.webp" alt="640"></p>
+<p><img src="https://img.doge.sh.cn/assets/1634026103094sxe80DfX.webp" alt="640"></p>
 <p>如果要创建一个能够添加元素的 ArrayList ，你可以使用下面这种创建方式：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; arrayList = <span class="keyword">new</span> ArrayList&lt;String&gt;(Arrays.asList(arr));</span><br></pre></td></tr></table></figure>
 
 <p>因为 ArrayList 的构造方法是可以接收一个 Collection 集合的，所以这种创建方式是可行的。</p>
-<p><img src="https://cdn.59ict.com/assets/1634026209073A5NGzYW4.webp" alt="640 (1)"></p>
+<p><img src="https://img.doge.sh.cn/assets/1634026209073A5NGzYW4.webp" alt="640 (1)"></p>
 <h2 id="错误二：检查数组是否包含某个值"><a href="#错误二：检查数组是否包含某个值" class="headerlink" title="错误二：检查数组是否包含某个值"></a>错误二：检查数组是否包含某个值</h2><p>检查数组中是否包含某个值，部分程序员经常会这么做：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;(Arrays.asList(arr));</span><br><span class="line"><span class="keyword">return</span> set.contains(targetValue);</span><br></pre></td></tr></table></figure>
 
@@ -178,7 +178,7 @@ var _hmt = _hmt || [];
 <p>为啥呢？</p>
 <p>那是因为使用 ArrayList 中外部 remove 元素，会造成其内部结构和游标的改变。</p>
 <p>在阿里开发规范上，也有不要在 for-each 循环内对元素进行 remove/add 操作的说明。</p>
-<p><img src="https://cdn.59ict.com/assets/1634026383494RKxZDS3i.webp" alt="640 (2)"></p>
+<p><img src="https://img.doge.sh.cn/assets/1634026383494RKxZDS3i.webp" alt="640 (2)"></p>
 <p>所以大家要使用 List 进行元素的添加或者删除操作，一定要使用迭代器进行删除。也就是</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;(Arrays.asList(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>));</span><br><span class="line">Iterator&lt;String&gt; iter = list.iterator();</span><br><span class="line"><span class="keyword">while</span> (iter.hasNext()) &#123;</span><br><span class="line"> String s = iter.next();</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">if</span> (s.equals(<span class="string">&quot;a&quot;</span>)) &#123;</span><br><span class="line">  iter.remove();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -208,7 +208,7 @@ var _hmt = _hmt || [];
 
 <p>所以，正确选择可变对象还是不可变对象需要慎重抉择。</p>
 <h2 id="错误九：构造函数"><a href="#错误九：构造函数" class="headerlink" title="错误九：构造函数"></a>错误九：构造函数</h2><p>首先看一段代码，分析为什么会编译不通过？</p>
-<p><img src="https://cdn.59ict.com/assets/1634026571686yt2CtKGS.webp" alt="640 (3)"></p>
+<p><img src="https://img.doge.sh.cn/assets/1634026571686yt2CtKGS.webp" alt="640 (3)"></p>
 <p>发生此编译错误是因为未定义默认 Super 的构造函数。在 Java 中，如果一个类没有定义构造函数，编译器会默认为该类插入一个默认的无参数构造函数。如果在 Super 类中定义了构造函数，在这种情况下 Super(String s)，编译器将不会插入默认的无参数构造函数。这就是上面 Super 类的情况。</p>
 <p>要想解决这个问题，只需要在 Super 中添加一个无参数的构造函数即可。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Super</span><span class="params">()</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Super&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -277,7 +277,7 @@ var _hmt = _hmt || [];
     <ul id="categorys" class="tag_box list-unstyled collapse in">
           
   <li>
-    <li><a href="/categories/Java/">Java<span>2</span></a></li>
+    <li><a href="/categories/Java/">Java<span>4</span></a></li>
   </li>
 
     </ul>
@@ -290,7 +290,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/Java/">Java<span>2</span></a></li> <li><a href="/tags/转载/">转载<span>1</span></a></li>
+  <li><a href="/tags/Java/">Java<span>4</span></a></li> <li><a href="/tags/转载/">转载<span>1</span></a></li>
     </ul>
 	</div>
 		
@@ -321,7 +321,7 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2021 icetea
+  &copy; 2022 icetea
   
       with help from <a>Hexo</a>,<a>Freemind</a>,<a>Twitter Bootstrap</a> and <a>BOOTSTRA.386</a>. 
      <br> Theme by <a>Freemind.386</a>.    
